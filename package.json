@@ -1,0 +1,23 @@
+{
+  "name": "devops",
+  "version": "0.0.1",
+  "description": "Ejemplos básico devops",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "John Serrano",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^5.1.1",
+    "supertest": "^3.0.0"
+  },
+  "dependencies": {
+    "express": "^4.16.3"
+  },
+  "repository": "https://github.com/johnserrano15/DevOps"
+}
