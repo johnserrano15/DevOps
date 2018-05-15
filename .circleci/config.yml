@@ -43,6 +43,7 @@ jobs:
           name: Deployment
           command: sh deployments/qa.sh
 
-    branches:
-      only: /feature_.*/
+    filters:
+      branches:
+        only: /feature_.*/
       
