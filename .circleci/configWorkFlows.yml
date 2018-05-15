@@ -1,24 +1,23 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
-      # - image: circleci/node:6.11
       - image: jandrey15/cci-demo-docker-primary:0.0.1
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
 
-    working_directory: ~/repo
+    working_directory: ~/app
+
+    # branches:
+    #   ignore:
+    #     - develop
+    #     - /feature-.*/
+
+    # branches:
+    #   only:
+    #     - master
+    #     - /rc-.*/
 
     steps:
-      - checkout
+     - checkout
 
       # Download and cache dependencies
       - restore_cache:
@@ -27,23 +26,31 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      # - run: yarn install
       - run: npm install
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-        
-      # run tests!
-      # - run: yarn test
+
       - run:
           name: Test
           command: npm test
-  deploy:
+          
+  deploy-stage:
+    docker:
+      - image: ubuntu:14.04
+    working_directory: /tmp/app  
+    steps:
+      - checkout
+      - run:
+          name: Deployment
+          command: sh deployments/qa.sh        
+          
+  deploy-prod:
     machine:
-        enabled: true
-    working_directory: ~/repo
+      enabled: true
+    working_directory: /tmp/app  
     steps:
       - checkout
       - run:
@@ -52,13 +59,19 @@ jobs:
 
 workflows:
   version: 2
-  build-and-deploy:
+  build-deploy:
     jobs:
       - build
-      - deploy:
+      - deploy-stage:
           requires:
             - build
           filters:
             branches:
-              only: /feature_.*/
+              only: stage
+      - deploy-prod:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master    
       
