@@ -40,9 +40,9 @@ jobs:
           name: Test
           command: npm test
 
-  deployment:
-    feature:
-      branch: /feature_.*/
-      commands:
-        - sh deployments/qa.sh
+    deployment:
+      feature:
+        branch: /feature_.*/
+        commands:
+          - sh deployments/qa.sh
       
