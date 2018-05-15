@@ -28,37 +28,29 @@ jobs:
           - v1-dependencies-
 
       # - run: yarn install
-      - run: npm install
+      # - run: npm install
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
         
-      # run tests!
-      # - run: yarn test
       - run:
-          name: Test
-          command: npm test
-  deploy:
-    machine:
-        enabled: true
-    working_directory: ~/repo
-    steps:
-      - checkout
+          name: Docker Build
+          command: docker build -t platzi .
+
       - run:
-          name: Deployment
+          name: Docker Test
+          command: docker run platzi npm test
+
+      - run:
+          name: Docker Run
+          command: docker run -d -p 3000:300 platzi
+
+      - run:
+          name: Docker Deployment
           command: sh deployments/qa.sh
 
-workflows:
-  version: 2
-  build-and-deploy:
-    jobs:
-      - build
-      - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only: /feature_.*/
+    branches:
+      only: /feature_.*/
       
