@@ -13,6 +13,7 @@ resource "digitalocean_loadbalancer" "devopsloadbal" {
   healthcheck {
     port = 3000
     protocol = "http"
+    path = "/"
   }
 
   droplet_tag = "${digitalocean_tag.devopstag.name}"
@@ -23,7 +24,7 @@ resource "digitalocean_tag" "devopstag" {
 }
 
 resource "digitalocean_droplet" "web" {
-  count              = 3
+  count              = 2
   image              = "34398260"
   name               = "devops-v2"
   region             = "nyc3"
