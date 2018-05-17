@@ -5,6 +5,7 @@
       "image": "coreos-stable",
       "region": "nyc3",
       "size": "512mb",
+      "snapshot_name": "devops-demo-snapshot",
       "ssh_username": "core"
     }
   ],
