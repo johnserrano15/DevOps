@@ -8,12 +8,13 @@ resource "digitalocean_droplet" "web" {
   #cloud-config
   coreos:
     units:
-      - name: "devopsdemo.service"
-        command: "start"
+      - name: devopsdemo.service
+        command: start
         content: |
           [Unit]
           Description=devops demo
           After=docker.service
+
           [Service]
           ExecStart=/usr/bin/docker -d -p 3000:3000 devops
   EOF
