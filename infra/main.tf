@@ -25,11 +25,17 @@ resource "digitalocean_tag" "devopstag" {
 
 resource "digitalocean_droplet" "web" {
   count              = 2
-  image              = "34398260"
+  image              = "${var.image_id}"
   name               = "devops-v2"
   region             = "nyc3"
   size               = "512mb"
-  tags               = ["${digitalocean_tag.devopstag.id}"] 
+  tags               = ["${digitalocean_tag.devopstag.id}"]
+  lifecycle {
+    create_before_destroy = true
+  }
+  provisioner "local-exec" {
+    command = "sleep 160 && curl ${self.ipv4_address}:3000"
+  }
   ssh_keys           = [20843332]
   user_data          = "${file("web.conf")}"
 }
