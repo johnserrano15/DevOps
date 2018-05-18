@@ -14,7 +14,7 @@ echo $TF_VAR_image_id &&
 cd infra &&
 terraform init -input=false && 
 terraform apply -input=false -auto-approve && cd .. &&
-git config --global user.email "andrey_201015@hotmail.com" &&
+git config --global user.email "circleci@awesomeMail.com" &&
 git config --global user.name "Circle CI Script" &&
 git add infra && git commit -m 'Deployed $CIRCLE_BUILD NUM [skip ci]' &&
 
